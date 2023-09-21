@@ -1,17 +1,8 @@
 // Define a global variable board
 let board = [];
-
-// Initialize the board as a 6x7 array filled with zeros
-for (let i = 0; i < 6; i++) {
-    board[i] = [];
-    for (let j = 0; j < 7; j++) {
-        board[i][j] = 0;
-    }
-}
-
-function set(row, col, player) {
-    board[row][col] = player;
-}
+//Player 1 starts
+let turn;
+resetGame();
 
 function render() {
     // Find the DOM element corresponding to the <div>
@@ -53,7 +44,8 @@ function render() {
         table.appendChild(row);
     }
 
-    table.addEventListener('click', function(event) {
+    table.addEventListener('click', function(event) 
+    {
         if (event.target.tagName === "TD")
         {
             play(event.target.dataset.column);
@@ -62,19 +54,43 @@ function render() {
     });
 }
 
+
 // Call the render() function to create the initial game board
-render();
+function resetGame() {
+    // Set the dimensions of the board
+    const numRows = 6;
+    const numCols = 7;
 
-let turn = 1;
-
-function play(column) {
-    for (let i = 5; i >= 0; i--) { // Start from the bottom row and go up
-        if (board[i][column] === 0) {
-            board[i][column] = turn;
-            if (turn === 1) turn = 2;
-            else turn = 1;
-            return i;
+    // Initialize the board as a 6x7 array filled with zeros
+    board = [];
+    for (let i = 0; i < numRows; i++) {
+        board[i] = [];
+        for (let j = 0; j < numCols; j++) {
+            board[i][j] = 0;
         }
     }
-    return false; // Column is full
+
+    // Player 1's turn
+    turn = 1;
+
+    // Render the initial board
+    render();
 }
+
+function play(column) {
+    for (let row = 5; row >= 0; row--) //iterate through rows starting from the bottom
+    {
+        if (board[row][column] === 0) //if cell is empty
+        {
+            board[row][column] = turn; //this cell is now the current player's token
+
+            // Change turn
+            if (turn === 1) turn = 2
+            else turn = 1;
+
+            return row;
+        }
+    }
+    return false; // column is full
+}
+
