@@ -1,6 +1,9 @@
 table {
     border-collapse: collapse;
     background-color: rgb(93, 136, 172);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
 }
 
 td {
@@ -18,4 +21,14 @@ td {
 
 .player2 {
     background-color: yellow;
+}
+
+h1
+{
+    text-align: center;
+}
+
+h2
+{
+    text-align: center;
 }
