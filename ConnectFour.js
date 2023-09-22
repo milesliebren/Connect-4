@@ -57,6 +57,7 @@ function render()
         if (event.target.tagName === "TD") //check if player clicked a cell
         {
             play(event.target.dataset.column); //call play function with cell clicked as a parameter
+            checkDraw();
             render(); //refresh the screen
         }
     });
@@ -98,7 +99,9 @@ function resetGame()
  */
 
 //called when a cell is clicked - populates cell with current player based on column and then changes player turn
-function play(column) {
+function play(column) 
+{
+
     for (let row = 5; row >= 0; row--) 
     {
         if (board[row][column] === 0) 
@@ -127,6 +130,29 @@ function play(column) {
     return false; // column is full
 }
 
+
+/**
+ * 
+ * @description check to see if all columns are full, if so the game is a draw.
+ */
+function checkDraw()
+{
+    let isFull = [6];
+    for (let col = 0; col < 6; col++) //iterate through the top row
+    {
+        isFull[col] = false;
+        if (board[0][col] !== 0) //if all are full
+        {
+            isFull[col] = true; //add cell to list of full cells
+        }
+    }
+
+    if (!isFull.includes(false)) //if the entire list is true, the game is a draw.
+    {
+        handleWin(0);
+    }
+}
+
 /**
  * @param currentPosition the position of the current token
  * @returns if a player has won or not
@@ -136,14 +162,14 @@ function checkWin(currentPosition)
 {
     const directions = 
     [
-        [0, 1], 
-        [0, -1], 
-        [1, 0], 
-        [-1, 0], 
-        [1, 1], 
-        [1, -1], 
-        [-1, 1],
-        [-1,-1]
+        [0, 1], //right
+        [0, -1], //left
+        [1, 0], //up
+        [-1, 0], //down
+        [1, 1], //up right
+        [1, -1], //up left
+        [-1, 1], //down right
+        [-1,-1] //down left
     ];
 
     for (const [dirX, dirY] of directions) //for each direction (dirX and dirY) in the available directions
@@ -236,9 +262,15 @@ function checkValidCells(currentPosition)
  * @param {token} player the winning player.
  * @description shows a popup of the winner and resets the game. 
  */
-function handleWin(player) {
-    setTimeout(function () {
-        window.alert(`Player ${player} wins!`); // Show who wins as a popup after a short delay
-        resetGame(); // Restart the game after a win
+function handleWin(player) 
+{
+    setTimeout(function () 
+    {
+        if (player !== 0)
+        {
+            window.alert(`Player ${player} wins!`); // Show who wins as a popup after a short delay
+        }
+        else window.alert('It\'s a draw!');
+        resetGame(); // Restart the game after a win or draw
     }, 100); // Adjust the delay time as needed (e.g., 100 milliseconds)
 }
