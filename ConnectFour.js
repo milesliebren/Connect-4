@@ -4,6 +4,11 @@ let board = [];
 //Player 1 starts
 let turn;
 
+let player1Score = 0;
+let player2Score = 0;
+document.getElementById('player1Score').innerHTML = 0;
+document.getElementById('player2Score').innerHTML = 0;
+
 //start game
 resetGame();
 
@@ -13,17 +18,19 @@ resetGame();
  */
 function render() 
 {
-    // Find the element corresponding to the <div>
+    // Find the elements corresponding to the <div>
     const container = document.querySelector('#game');
 
-    // Empty the element
+    // Empty the elements
     container.innerHTML = '';
 
-    // Create a <table> node
+    // Create a <table> node for each element
     const table = document.createElement('table');
 
-    // Add the <table> node to the <div> element
+    // Add the <table> nodes to the <div> elements
     container.appendChild(table);
+
+    
 
     // Create a 6x7 table using nested for loops
     for (let i = 0; i < 6; i++) {
@@ -87,6 +94,7 @@ function resetGame()
 
     // Player 1's turn to start the game
     turn = 1;
+
 
     // Render the initial board
     render();
@@ -266,11 +274,27 @@ function handleWin(player)
 {
     setTimeout(function () 
     {
+        
+        //update score
+        if (player === 1) 
+        {
+            player1Score++;
+        } else if (player == 2)
+        {
+            player2Score++;
+        }
+        document.getElementById('player1Score').innerHTML = player1Score;
+        document.getElementById('player2Score').innerHTML = player2Score;
+
+        //show popup of who wins
         if (player !== 0)
         {
-            window.alert(`Player ${player} wins!`); // Show who wins as a popup after a short delay
+            window.alert(`Player ${player} wins!`);
         }
         else window.alert('It\'s a draw!');
+
+        
+
         resetGame(); // Restart the game after a win or draw
     }, 100); // Adjust the delay time as needed (e.g., 100 milliseconds)
 }
